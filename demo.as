@@ -1,45 +1,67 @@
-import flash.events.KeyboardEvent;
-import flash.text.TextField;
-import flash.text.TextFormat;
+package 
+{
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.text.TextFieldAutoSize;
 
-// 1. Setup a display label to show the key presses
-var statusField:TextField = new TextField();
-statusField.width = 500;
-statusField.height = 100;
-statusField.x = 50;
-statusField.y = 50;
+	public class Main extends Sprite 
+	{
+		private var statusField:TextField;
 
-var format:TextFormat = new TextFormat();
-format.size = 24;
-format.font = "Arial";
-statusField.defaultTextFormat = format;
-statusField.text = "Press a required key (1,2,3,4, Space, P, M, Esc, WASD)";
-addChild(statusField);
+		public function Main() 
+		{
+			if (stage) init();
+			else addEventListener(Event.ADDED_TO_STAGE, init);
+		}
 
-// 2. Listen for keyboard events
-stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		private function init(e:Event = null):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
+			// Setup Text Format
+			var format:TextFormat = new TextFormat();
+			format.size = 30;
+			format.font = "_sans";
+			format.bold = true;
 
-function onKeyPress(event:KeyboardEvent):void {
-    var pressed:String = "";
-    
-    // Map the KeyCodes to their visual names
-    switch(event.keyCode) {
-        case 49: pressed = "1"; break;
-        case 50: pressed = "2"; break;
-        case 51: pressed = "3"; break;
-        case 52: pressed = "4"; break;
-        case 32: pressed = "Space"; break;
-        case 80: pressed = "P"; break;
-        case 77: pressed = "M"; break;
-        case 27: pressed = "Escape"; break;
-        case 87: pressed = "W"; break;
-        case 65: pressed = "A"; break;
-        case 83: pressed = "S"; break;
-        case 68: pressed = "D"; break;
-        default:
-            pressed = "Other Key (Code: " + event.keyCode + ")";
-    }
-    
-    statusField.text = "Last Key Pressed: " + pressed;
-    trace("Key Pressed: " + pressed);
+			// Setup Text Field
+			statusField = new TextField();
+			statusField.defaultTextFormat = format;
+			statusField.autoSize = TextFieldAutoSize.LEFT;
+			statusField.text = "Waiting for input (1,2,3,4, SPACE, P, M, ESC, WASD)...";
+			statusField.x = 20;
+			statusField.y = 100;
+			addChild(statusField);
+
+			// Add Keyboard Listener
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		}
+
+		private function onKeyPress(event:KeyboardEvent):void 
+		{
+			var keyName:String = "";
+			
+			switch(event.keyCode) 
+			{
+				case 49: keyName = "1"; break;
+				case 50: keyName = "2"; break;
+				case 51: keyName = "3"; break;
+				case 52: keyName = "4"; break;
+				case 32: keyName = "SPACE"; break;
+				case 80: keyName = "P"; break;
+				case 77: keyName = "M"; break;
+				case 27: keyName = "ESCAPE"; break;
+				case 87: keyName = "W"; break;
+				case 65: keyName = "A"; break;
+				case 83: keyName = "S"; break;
+				case 68: keyName = "D"; break;
+				default: keyName = "Key Code: " + event.keyCode;
+			}
+			
+			statusField.text = "Detected Key: " + keyName;
+		}
+	}
 }
