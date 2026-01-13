@@ -7,6 +7,9 @@ package
 	import flash.text.TextFormat;
 	import flash.text.TextFieldAutoSize;
 
+	// This line sets the background color and frame rate
+	[SWF(backgroundColor="#000000", frameRate="30", width="800", height="600")]
+
 	public class Main extends Sprite 
 	{
 		private var statusField:TextField;
@@ -21,19 +24,23 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			// Setup Text Format
+			// Setup Text Format: White color (0xFFFFFF)
 			var format:TextFormat = new TextFormat();
 			format.size = 30;
 			format.font = "_sans";
 			format.bold = true;
+			format.color = 0xFFFFFF; 
 
 			// Setup Text Field
 			statusField = new TextField();
 			statusField.defaultTextFormat = format;
 			statusField.autoSize = TextFieldAutoSize.LEFT;
 			statusField.text = "Waiting for input (1,2,3,4, SPACE, P, M, ESC, WASD)...";
-			statusField.x = 20;
-			statusField.y = 100;
+			
+			// Center the text slightly
+			statusField.x = 50;
+			statusField.y = 200;
+			
 			addChild(statusField);
 
 			// Add Keyboard Listener
